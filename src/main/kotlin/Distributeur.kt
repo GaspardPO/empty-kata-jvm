@@ -1,0 +1,1 @@
+data class Distributeur(val nom: String)

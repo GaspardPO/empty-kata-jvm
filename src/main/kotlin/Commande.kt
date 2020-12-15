@@ -1,8 +1,5 @@
 sealed class Commande {
     object DemarrerInscription : Commande()
-    object InscrirePourLaDistribution : Commande()
-    object DesinscrireDeLaDistribution : Commande() {
-
-    }
+    data class InscrirePourLaDistribution(val distributeur : Distributeur) : Commande()
+    data class DesinscrireDeLaDistribution(val distributeur : Distributeur) : Commande()
 }
-
