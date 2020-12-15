@@ -26,10 +26,8 @@ class DistributionInscription {
     }
 
     private fun desinscrire(): Evenement? {
-        return if (stream.contains(Evenement.DistributeurInscrit)) {
+        return if (stream.isNotEmpty() && stream.last() is Evenement.DistributeurInscrit) {
             Evenement.DistributeurDesinscrit
         } else null
     }
-
-
 }
