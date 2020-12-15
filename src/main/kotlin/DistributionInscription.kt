@@ -26,8 +26,10 @@ class DistributionInscription {
     }
 
     private fun desinscrire(commande: Commande.DesinscrireDeLaDistribution): Evenement? {
-        return if (stream.isNotEmpty()
-            && stream.last().equals(Evenement.DistributeurInscrit(commande.distributeur))) {
+
+        val dernierEventInscrit  = stream.lastIndexOf(Evenement.DistributeurInscrit(commande.distributeur))
+        val dernierEventDesinscrit  = stream.lastIndexOf(Evenement.DistributeurDesinscrit(commande.distributeur))
+        return if (dernierEventInscrit > dernierEventDesinscrit) {
             Evenement.DistributeurDesinscrit(commande.distributeur)
         } else null
     }

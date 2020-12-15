@@ -6,6 +6,8 @@ import org.junit.Test
 class DistributionInscriptionShould {
 
     val a = Distributeur("A")
+    val b = Distributeur("B")
+
 
     @Test
     fun `démarrer l'inscription`(){
@@ -73,13 +75,23 @@ class DistributionInscriptionShould {
     fun `ne pas desinscrire si B n'est pas inscrit`(){
         val distributionInscription = DistributionInscription()
         distributionInscription.executeCommande(DemarrerInscription)
-        // inscrire A.
-        distributionInscription.executeCommande(InscrirePourLaDistribution(a))
+       distributionInscription.executeCommande(InscrirePourLaDistribution(a))
 
-        // désinscrire B
-        val b = Distributeur("B")
         val actual = distributionInscription.executeCommande(DesinscrireDeLaDistribution(b))
 
         assertThat(actual).isNull()
     }
+
+    @Test
+    fun `desinscrire A de la distribution quand B est le dernier inscrit`(){
+        val distributionInscription = DistributionInscription()
+        distributionInscription.executeCommande(DemarrerInscription)
+        distributionInscription.executeCommande(InscrirePourLaDistribution(a))
+        distributionInscription.executeCommande(InscrirePourLaDistribution(b))
+
+        val actual = distributionInscription.executeCommande(DesinscrireDeLaDistribution(a))
+
+        assertThat(actual).isEqualTo(DistributeurDesinscrit(a))
+    }
+    
 }
