@@ -11,7 +11,7 @@ class DistributionInscriptionShould {
         val actual : Evenement? = distributionInscription.executeCommande(commande)
 
         val expected : Evenement = Evenement.InscriptionDemarree
-        assertThat(expected).isEqualTo(actual)
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
@@ -23,7 +23,7 @@ class DistributionInscriptionShould {
         val actual : Evenement? = distributionInscription.executeCommande(commande)
 
         val expected : Evenement = Evenement.DistributeurInscrit
-        assertThat(expected).isEqualTo(actual)
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
@@ -34,6 +34,32 @@ class DistributionInscriptionShould {
         val actual : Evenement? = distributionInscription.executeCommande(commande)
 
         val expected : Evenement? = null
-        assertThat(expected).isEqualTo(actual)
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `desinscrire de la distribution`(){
+        val distributionInscription = DistributionInscription()
+        distributionInscription.executeCommande(Commande.DemarrerInscription)
+        distributionInscription.executeCommande(Commande.InscrirePourLaDistribution)
+
+        val commande : Commande = Commande.DesinscrireDeLaDistribution
+        val actual : Evenement? = distributionInscription.executeCommande(commande)
+
+
+        val expected : Evenement = Evenement.DistributeurDesinscrit
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `ne pas desinscrire si personne n'est inscrit`(){
+        val distributionInscription = DistributionInscription()
+        distributionInscription.executeCommande(Commande.DemarrerInscription)
+
+        val commande : Commande = Commande.DesinscrireDeLaDistribution
+        val actual : Evenement? = distributionInscription.executeCommande(commande)
+
+        val expected : Evenement? = null
+        assertThat(actual).isEqualTo(expected)
     }
 }

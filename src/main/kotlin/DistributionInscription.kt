@@ -12,15 +12,22 @@ class DistributionInscription {
     private fun getEvenement(commande: Commande) = when (commande) {
         is Commande.DemarrerInscription -> demarrerInscription()
         is Commande.InscrirePourLaDistribution -> inscrirePourLaDistribution()
+        is Commande.DesinscrireDeLaDistribution -> desinscrire()
     }
 
-    fun demarrerInscription(): Evenement {
+    private fun demarrerInscription(): Evenement {
         return Evenement.InscriptionDemarree
     }
 
-    fun inscrirePourLaDistribution(): Evenement? {
+    private fun inscrirePourLaDistribution(): Evenement? {
         return if (stream.contains(Evenement.InscriptionDemarree)) {
             Evenement.DistributeurInscrit
+        } else null
+    }
+
+    private fun desinscrire(): Evenement? {
+        return if (stream.contains(Evenement.DistributeurInscrit)) {
+            Evenement.DistributeurDesinscrit
         } else null
     }
 
