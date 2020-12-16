@@ -1,5 +1,9 @@
-class DistributionInscription {
-    val stream = mutableListOf<Evenement>()
+package domain
+
+import domain.Evenement.InscriptionDemarree
+
+class DistributionInscription(val id : Id) {
+    private val stream = mutableListOf<Evenement>()
 
     fun executeCommande(commande: Commande): Evenement? {
         val evenement = getEvenement(commande)
@@ -16,21 +20,23 @@ class DistributionInscription {
     }
 
     private fun demarrerInscription(): Evenement {
-        return Evenement.InscriptionDemarree
+        return InscriptionDemarree(id)
     }
 
     private fun inscrirePourLaDistribution(commande: Commande.InscrirePourLaDistribution): Evenement? {
-        return if (stream.contains(Evenement.InscriptionDemarree)) {
-            Evenement.DistributeurInscrit(commande.distributeur)
+        return if (stream.contains(InscriptionDemarree(id))) {
+            Evenement.DistributeurInscrit(commande.distributeur, id)
         } else null
     }
 
     private fun desinscrire(commande: Commande.DesinscrireDeLaDistribution): Evenement? {
 
-        val dernierEventInscrit  = stream.lastIndexOf(Evenement.DistributeurInscrit(commande.distributeur))
-        val dernierEventDesinscrit  = stream.lastIndexOf(Evenement.DistributeurDesinscrit(commande.distributeur))
+        val dernierEventInscrit  = stream.lastIndexOf(Evenement.DistributeurInscrit(commande.distributeur, id))
+        val dernierEventDesinscrit  = stream.lastIndexOf(Evenement.DistributeurDesinscrit(commande.distributeur, id))
         return if (dernierEventInscrit > dernierEventDesinscrit) {
-            Evenement.DistributeurDesinscrit(commande.distributeur)
+            Evenement.DistributeurDesinscrit(commande.distributeur, id)
         } else null
     }
 }
+
+data class Id(val int: Int)
