@@ -2,8 +2,12 @@ package domain
 
 import domain.Evenement.InscriptionDemarree
 
-class DistributionInscription(val id : Id) {
-    private val stream = mutableListOf<Evenement>()
+class DistributionInscription(evenements : List<Evenement>) {
+
+    private val stream : MutableList<Evenement> = evenements.toMutableList()
+    private val id = evenements.firstOrNull()?.id ?: generateUUID()
+
+    private fun generateUUID() = Id(0)
 
     fun executeCommande(commande: Commande): Evenement? {
         val evenement = getEvenement(commande)

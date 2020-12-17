@@ -15,7 +15,7 @@ class DistributionInscriptionShould {
 
     @Test
     fun `démarrer l'inscription`(){
-        val distributionInscription = DistributionInscription(id)
+        val distributionInscription = DistributionInscription(emptyList())
 
         val actual = distributionInscription.executeCommande(DemarrerInscription)
 
@@ -24,8 +24,7 @@ class DistributionInscriptionShould {
 
     @Test
     fun `inscrire pour la distribution`(){
-        val distributionInscription = DistributionInscription(id)
-        distributionInscription.executeCommande(DemarrerInscription)
+        val distributionInscription = DistributionInscription(listOf(InscriptionDemarree(id)))
 
         val actual = distributionInscription.executeCommande(InscrirePourLaDistribution(a))
 
@@ -34,7 +33,7 @@ class DistributionInscriptionShould {
 
     @Test
     fun `ne pas inscrire si l'inscription n'est pas démarrée`(){
-        val distributionInscription = DistributionInscription(id)
+        val distributionInscription = DistributionInscription(emptyList())
 
         val actual = distributionInscription.executeCommande(InscrirePourLaDistribution(a))
 
@@ -43,9 +42,7 @@ class DistributionInscriptionShould {
 
     @Test
     fun `desinscrire de la distribution`(){
-        val distributionInscription = DistributionInscription(id)
-        distributionInscription.executeCommande(DemarrerInscription)
-        distributionInscription.executeCommande(InscrirePourLaDistribution(a))
+        val distributionInscription = DistributionInscription(listOf(InscriptionDemarree(id), DistributeurInscrit(a, id)))
 
         val actual = distributionInscription.executeCommande(DesinscrireDeLaDistribution(a))
 
@@ -54,8 +51,7 @@ class DistributionInscriptionShould {
 
     @Test
     fun `ne pas desinscrire si personne n'est inscrit`(){
-        val distributionInscription = DistributionInscription(id)
-        distributionInscription.executeCommande(DemarrerInscription)
+        val distributionInscription = DistributionInscription(listOf(InscriptionDemarree(id)))
 
         val actual = distributionInscription.executeCommande(DesinscrireDeLaDistribution(a))
 
@@ -64,9 +60,7 @@ class DistributionInscriptionShould {
 
     @Test
     fun `ne pas desinscrire deux fois`(){
-        val distributionInscription = DistributionInscription(id)
-        distributionInscription.executeCommande(DemarrerInscription)
-        distributionInscription.executeCommande(InscrirePourLaDistribution(a))
+        val distributionInscription = DistributionInscription(listOf(InscriptionDemarree(id), DistributeurInscrit(a, id)))
 
         distributionInscription.executeCommande(DesinscrireDeLaDistribution(a))
 
@@ -77,9 +71,7 @@ class DistributionInscriptionShould {
 
     @Test
     fun `ne pas desinscrire si B n'est pas inscrit`(){
-        val distributionInscription = DistributionInscription(id)
-        distributionInscription.executeCommande(DemarrerInscription)
-       distributionInscription.executeCommande(InscrirePourLaDistribution(a))
+        val distributionInscription = DistributionInscription(listOf(InscriptionDemarree(id), DistributeurInscrit(a, id)))
 
         val actual = distributionInscription.executeCommande(DesinscrireDeLaDistribution(b))
 
@@ -88,10 +80,7 @@ class DistributionInscriptionShould {
 
     @Test
     fun `desinscrire A de la distribution quand B est le dernier inscrit`(){
-        val distributionInscription = DistributionInscription(id)
-        distributionInscription.executeCommande(DemarrerInscription)
-        distributionInscription.executeCommande(InscrirePourLaDistribution(a))
-        distributionInscription.executeCommande(InscrirePourLaDistribution(b))
+        val distributionInscription = DistributionInscription(listOf(InscriptionDemarree(id), DistributeurInscrit(a, id), DistributeurInscrit(b, id)))
 
         val actual = distributionInscription.executeCommande(DesinscrireDeLaDistribution(a))
 

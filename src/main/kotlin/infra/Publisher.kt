@@ -17,5 +17,5 @@ class Publisher(val eventStore : EventStore) {
 }
 
 interface EventStore {
-    fun storeEvent(evenement: Evenement) :Unit
+    fun storeEvent(evenement: Evenement)
 }

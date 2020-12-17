@@ -1,5 +1,5 @@
 package infra
 
 interface Handler {
-    fun handle(evenement: Evenement)  : Unit
+    fun handle(evenement: Evenement)
 }
