@@ -9,9 +9,12 @@ class Publisher(val eventStore : EventStore) {
         subscribers.add(handler)
     }
 
-    fun publish(evenement: Evenement) {
-        eventStore.storeEvent(evenement)
-        subscribers.forEach{ it.handle(evenement)}
+    fun publish(evenement: Evenement, version: Int): Boolean {
+        val stored = eventStore.storeEvent(evenement, version)
+        if (stored) {
+            subscribers.forEach { it.handle(evenement) }
+        }
+        return stored
     }
 
 }

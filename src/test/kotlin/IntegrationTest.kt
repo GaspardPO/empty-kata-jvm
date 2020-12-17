@@ -1,6 +1,6 @@
 import domain.*
 import infra.*
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class IntegrationTest {
@@ -22,16 +22,18 @@ class IntegrationTest {
         val pubsub = Publisher(eventStore)
         pubsub.register(handler)
 
-        val distributionInscription = DistributionInscription(eventRepository.load(id))
+        val pastEvents = eventRepository.load(id)
+        val distributionInscription = DistributionInscription(pastEvents)
 
         //when
         //commande : inscrire un distributeur
         val commande = Commande.InscrirePourLaDistribution(Distributeur("allaal"))
         val evenement = distributionInscription.executeCommande(commande)
-        pubsub.publish(evenement!!)
+        pubsub.publish(evenement!!, pastEvents.size)
 
         //then
         // projection sauvée avec compteur à 1
-        Assertions.assertThat(projections[id]!!.compteur).isEqualTo(1)
+        assertThat(projections[id]!!.compteur).isEqualTo(1)
+        assertThat(eventRepository.load(id)).hasSize(2)
     }
 }
