@@ -22,7 +22,7 @@ class IntegrationTest {
         val pubsub = Publisher(eventStore)
         pubsub.register(handler)
 
-        val distributionInscription = DistributionInscription(eventList)
+        val distributionInscription = DistributionInscription(eventRepository.load(id))
 
         //when
         //commande : inscrire un distributeur
